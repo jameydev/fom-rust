@@ -56,20 +56,25 @@ pub mod game {
     }
 
     pub mod monsters {
-        pub struct Monster {
+        use super::items;
+        pub struct Monster<'a> {
             name: String,
             health: f32,
             experience: usize,
-            drops: Vec<String>
+            drops: Vec<&'a items::Item>
         }
 
-        impl Monster {
-            pub fn spawn(name: &str, health: f32, experience: usize, drops: &Vec<String>) -> Monster {
-                Monster { name: name.to_string(), health, experience, drops: drops.to_vec() }
+        impl<'a> Monster<'a> {
+            pub fn spawn(name: &str, health: f32, experience: usize, drops: Vec<&'a items::Item>) -> Monster<'a> {
+                Monster { name: name.to_string(), health, experience, drops }
             }
 
             pub fn name(&self) -> &str {
                 &self.name
+            }
+
+            pub fn drops(&self) -> &Vec<&'a items::Item> {
+                &self.drops
             }
 
             pub fn take_damage(&mut self, dmg: f32) {
