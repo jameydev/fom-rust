@@ -1,4 +1,9 @@
 pub mod game {
+    pub mod utility {
+        pub struct GameMessage {
+            
+        }
+    }
     pub mod player {
         use super::items;
         pub enum Class {
@@ -53,14 +58,22 @@ pub mod game {
     pub mod monsters {
         pub struct Monster {
             name: String,
-            level: usize,
+            health: usize,
             experience: usize,
             drops: Vec<String>
         }
 
         impl Monster {
-            pub fn new(name: &str, level: usize, experience: usize, drops: &Vec<String>) -> Monster {
-                Monster { name: name.to_string(), level, experience, drops: drops.to_vec() }
+            pub fn spawn(name: &str, health: usize, experience: usize, drops: &Vec<String>) -> Monster {
+                Monster { name: name.to_string(), health, experience, drops: drops.to_vec() }
+            }
+
+            pub fn name(&self) -> &str {
+                &self.name
+            }
+
+            pub fn kill(&self) {
+                println!("Victory! You gained {}xp!", self.experience);
             }
         }
     }
@@ -94,8 +107,6 @@ pub mod game {
 
 #[cfg(test)]
 mod game_tests {
-    use std::vec;
-
     use super::game::player::*;
     use super::game::items;
 
@@ -123,5 +134,10 @@ mod game_tests {
         }
 
         assert_eq!(test_vec, vec2);
+    }
+
+    #[test]
+    fn monster_killer() {
+
     }
 }
