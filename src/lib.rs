@@ -1,7 +1,7 @@
 pub mod game {
     pub mod utility {
         pub struct GameMessage {
-            
+
         }
     }
     pub mod player {
@@ -58,18 +58,22 @@ pub mod game {
     pub mod monsters {
         pub struct Monster {
             name: String,
-            health: usize,
+            health: f32,
             experience: usize,
             drops: Vec<String>
         }
 
         impl Monster {
-            pub fn spawn(name: &str, health: usize, experience: usize, drops: &Vec<String>) -> Monster {
+            pub fn spawn(name: &str, health: f32, experience: usize, drops: &Vec<String>) -> Monster {
                 Monster { name: name.to_string(), health, experience, drops: drops.to_vec() }
             }
 
             pub fn name(&self) -> &str {
                 &self.name
+            }
+
+            pub fn take_damage(&mut self, dmg: f32) {
+                self.health -= dmg;
             }
 
             pub fn kill(&self) {
