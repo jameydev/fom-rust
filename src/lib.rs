@@ -1,5 +1,6 @@
 pub mod game {
     pub mod player {
+        use super::items;
         pub enum Class {
             Fighter,
             Rogue,
@@ -17,25 +18,25 @@ pub mod game {
             Dragonkin
         }
     
-        pub struct Player {
+        pub struct Player<'a> {
             name: String,
             class: Class,
             race: Race,
             health: f32,
             mana: f32,
-            inventory: Vec<(String, usize)>
+            inventory: Vec<&'a items::Item>
         }
     
-        impl Player {
+        impl<'a> Player<'a> {
             pub fn new(name: &str, class: Class, race: Race) -> Self {
                 Self { name: name.to_string(), class, race, health: 100.0, mana: 100.0, inventory: Vec::new() }
             }
 
-            pub fn add_item(&mut self, item: (String, usize)) {
+            pub fn add_item(&mut self, item: &'a items::Item) {
                 self.inventory.push(item);
             }
 
-            pub fn get_inventory(&self) -> &Vec<(String, usize)> {
+            pub fn get_inventory(&self) -> &Vec<&'a items::Item> {
                 &self.inventory
             }
 
@@ -47,7 +48,47 @@ pub mod game {
                 self.health -= damage;
             }
         }
+    }
 
+    pub mod monsters {
+        pub struct Monster {
+            name: String,
+            level: usize,
+            experience: usize,
+            drops: Vec<String>
+        }
+
+        impl Monster {
+            pub fn new(name: &str, level: usize, experience: usize, drops: &Vec<String>) -> Monster {
+                Monster { name: name.to_string(), level, experience, drops: drops.to_vec() }
+            }
+        }
+    }
+
+    pub mod NPChar {
+
+    }
+
+    pub mod items {
+        #[derive(Debug)]
+        pub struct Item {
+            name: String,
+            qty: usize
+        }
+
+        impl Item {
+            pub fn new(name: &str, qty: usize) -> Item {
+                Item { name: name.to_string(), qty }
+            }
+
+            pub fn name(&self) -> &str {
+                &self.name
+            }
+
+            pub fn qty(&self) -> usize {
+                self.qty
+            }
+        }
     }
 }
 
@@ -56,17 +97,31 @@ mod game_tests {
     use std::vec;
 
     use super::game::player::*;
+    use super::game::items;
 
-    fn player_setup() -> Player {
+    fn player_setup() -> Player<'static> {
         Player::new("Gaius", Class::Rogue, Race::Human)
     }
 
     #[test]
     fn inventory_add_works() {
         let mut test_player = player_setup();
-        test_player.add_item((String::from("Iron Sword"), 1));
-        test_player.add_item((String::from("Health Potion"), 4));
+        let mut test_vec = Vec::new();
+        
+        let item1 = items::Item::new("Iron Sword", 1);
+        let item2 = items::Item::new("Health Potion", 4);
+        test_vec.push((item1.name(), item1.qty()));
+        test_vec.push((item2.name(), item2.qty()));
 
-        assert_eq!(vec![(String::from("Iron Sword"), 1), (String::from("Health Potion"), 4)], *test_player.get_inventory());
+        test_player.add_item(&item1);
+        test_player.add_item(&item2);
+
+        
+        let mut vec2 = Vec::new();
+        for item in test_player.get_inventory() {
+            vec2.push((item.name(), item.qty()));
+        }
+
+        assert_eq!(test_vec, vec2);
     }
 }
