@@ -5,5 +5,10 @@ use fom::game;
 
 fn main() {
     println!("\t++>> Fate of Mystria <<++");
-    println!("\t...by Jamey Bryce\n");
+    println!("\t...by JameyDev\n");
+    game_loop();
+}
+
+fn game_loop() {
+
 }

@@ -1,9 +1,11 @@
+#![allow(unused)]
 pub mod game {
     pub mod utility {
         pub struct GameMessage {
 
         }
     }
+    
     pub mod player {
         use super::items;
         pub enum Class {
@@ -87,7 +89,7 @@ pub mod game {
         }
     }
 
-    pub mod NPChar {
+    pub mod npc {
 
     }
 
