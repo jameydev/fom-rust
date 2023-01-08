@@ -2,7 +2,7 @@
 pub mod game {
     pub mod utility {
         pub struct GameMessage {
-
+            msg: String
         }
     }
     
