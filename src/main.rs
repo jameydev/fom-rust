@@ -1,7 +1,7 @@
 #![allow(unused)]
 
-use std::io;
 use fom::game;
+use std::io;
 
 fn main() {
     println!("\t++>> Fate of Mystria <<++");
@@ -9,6 +9,4 @@ fn main() {
     game_loop();
 }
 
-fn game_loop() {
-
-}
+fn game_loop() {}

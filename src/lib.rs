@@ -2,19 +2,19 @@
 pub mod game {
     pub mod utility {
         pub struct GameMessage {
-            msg: String
+            msg: String,
         }
     }
-    
+
     pub mod player {
         use super::items;
         pub enum Class {
             Fighter,
             Rogue,
             Mage,
-            Cleric
+            Cleric,
         }
-    
+
         pub enum Race {
             Human,
             Dwarf,
@@ -22,21 +22,28 @@ pub mod game {
             Ork,
             Halfling,
             Infernali,
-            Dragonkin
+            Dragonkin,
         }
-    
+
         pub struct Player<'a> {
             name: String,
             class: Class,
             race: Race,
             health: f32,
             mana: f32,
-            inventory: Vec<&'a items::Item>
+            inventory: Vec<&'a items::Item>,
         }
-    
+
         impl<'a> Player<'a> {
             pub fn new(name: &str, class: Class, race: Race) -> Self {
-                Self { name: name.to_string(), class, race, health: 100.0, mana: 100.0, inventory: Vec::new() }
+                Self {
+                    name: name.to_string(),
+                    class,
+                    race,
+                    health: 100.0,
+                    mana: 100.0,
+                    inventory: Vec::new(),
+                }
             }
 
             pub fn add_item(&mut self, item: &'a items::Item) {
@@ -63,12 +70,22 @@ pub mod game {
             name: String,
             health: f32,
             experience: usize,
-            drops: Vec<&'a items::Item>
+            drops: Vec<&'a items::Item>,
         }
 
         impl<'a> Monster<'a> {
-            pub fn spawn(name: &str, health: f32, experience: usize, drops: Vec<&'a items::Item>) -> Monster<'a> {
-                Monster { name: name.to_string(), health, experience, drops }
+            pub fn spawn(
+                name: &str,
+                health: f32,
+                experience: usize,
+                drops: Vec<&'a items::Item>,
+            ) -> Monster<'a> {
+                Monster {
+                    name: name.to_string(),
+                    health,
+                    experience,
+                    drops,
+                }
             }
 
             pub fn name(&self) -> &str {
@@ -89,20 +106,21 @@ pub mod game {
         }
     }
 
-    pub mod npc {
-
-    }
+    pub mod npc {}
 
     pub mod items {
         #[derive(Debug)]
         pub struct Item {
             name: String,
-            qty: usize
+            qty: usize,
         }
 
         impl Item {
             pub fn new(name: &str, qty: usize) -> Item {
-                Item { name: name.to_string(), qty }
+                Item {
+                    name: name.to_string(),
+                    qty,
+                }
             }
 
             pub fn name(&self) -> &str {
@@ -118,8 +136,8 @@ pub mod game {
 
 #[cfg(test)]
 mod game_tests {
-    use super::game::player::*;
     use super::game::items;
+    use super::game::player::*;
 
     fn player_setup() -> Player<'static> {
         Player::new("Gaius", Class::Rogue, Race::Human)
@@ -129,7 +147,7 @@ mod game_tests {
     fn inventory_add_works() {
         let mut test_player = player_setup();
         let mut test_vec = Vec::new();
-        
+
         let item1 = items::Item::new("Iron Sword", 1);
         let item2 = items::Item::new("Health Potion", 4);
         test_vec.push((item1.name(), item1.qty()));
@@ -138,7 +156,6 @@ mod game_tests {
         test_player.add_item(&item1);
         test_player.add_item(&item2);
 
-        
         let mut vec2 = Vec::new();
         for item in test_player.get_inventory() {
             vec2.push((item.name(), item.qty()));
@@ -148,7 +165,5 @@ mod game_tests {
     }
 
     #[test]
-    fn monster_killer() {
-
-    }
+    fn monster_killer() {}
 }
