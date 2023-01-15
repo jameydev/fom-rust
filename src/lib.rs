@@ -1,8 +1,15 @@
 #![allow(unused)]
 pub mod game {
+    use text_colorizer::{Color::*, Colorize};
     pub mod utility {
         pub struct GameMessage {
             msg: String,
+        }
+
+        impl GameMessage {
+            pub fn new(&self, msg: &str) -> GameMessage {
+                GameMessage { msg: msg.to_string() }
+            }
         }
     }
 
